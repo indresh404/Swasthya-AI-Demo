@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export type Section = 'dashboard' | 'checkin' | 'medicine' | 'profile';
+export type Section = 'dashboard' | 'checkin' | 'medicine' | 'profile' | 'aichat';
 
 export function useSection() {
   const [activeSection, setActiveSection] = useState<Section>('dashboard');

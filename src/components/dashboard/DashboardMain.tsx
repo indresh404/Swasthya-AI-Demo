@@ -4,13 +4,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import HealthSummaryCard from './HealthSummaryCard';
 import RiskSpeedometer from './RiskSpeedometer';
-import BodySystemCards from './BodySystemCards';
-import VitalsGraph from './VitalsGraph';
+import AIClinicalInsights from './AIClinicalInsights';
+import { SymptomMap, SystemGrid } from './SystemGrid';
+import LiveVitalsChart from './LiveVitalsChart';
 import RiskTrendChart from './RiskTrendChart';
+import WatchAnalyticsRow from './WatchAnalyticsRow';
+import SleepCycleChart from './SleepCycleChart';
 import SchemesBanner from './SchemesBanner';
-import ActivityGraph from './ActivityGraph';
 import { patient } from '@/data/mockPatient';
-import { Activity } from 'lucide-react';
+import { Activity, ShieldCheck, Zap } from 'lucide-react';
 
 interface DashboardMainProps {
   onBodyMapOpen: () => void;
@@ -22,74 +24,107 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -16 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-      className="space-y-6 pb-6"
+      transition={{ duration: 0.35, ease: 'easeOut' }}
+      className="max-w-[1200px] mx-auto space-y-10 pb-24 px-4 md:px-0"
     >
-      <header className="mb-6 md:mb-8 pt-2">
-        <h2 className="font-sora text-3xl font-bold text-blue-900 tracking-tight">Good {new Date().getHours() < 12 ? 'Morning' : 'Evening'}, <span className="text-blue-600">{patient.name.split(' ')[0]}</span></h2>
-        <p className="text-sm text-text-secondary font-medium mt-2">Here is your daily health overview.</p>
-      </header>
-      
-      {/* 3D Body Map Banner */}
-      <button 
-        onClick={onBodyMapOpen}
-        className="w-full relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 p-6 md:p-8 flex items-center justify-between shadow-xl ring-1 ring-blue-500/20 group hover:shadow-2xl transition-all"
-      >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-green-500/20 transition-colors" />
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-green-500/10 rounded-full blur-2xl group-hover:bg-blue-400/20 transition-colors" />
+      <header className="mb-4 pt-4 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+           <div className="flex items-center gap-2 mb-2">
+             <div className="bg-primary/10 p-1.5 rounded-lg border border-primary/20">
+               <ShieldCheck size={16} className="text-primary" />
+             </div>
+             <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Clinical Health ID: #SW-9431</span>
+           </div>
+          <motion.h2 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+            className="font-headline font-extrabold text-3xl md:text-5xl text-on-surface tracking-tight"
+          >
+            Stay fit, <span className="text-primary">{patient.name.split(' ')[0]}</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="font-body font-medium text-on-surface-variant mt-2 max-w-xl"
+          >
+            Your health intelligence is synced from your smart watch and latest clinical check-ins.
+          </motion.p>
+        </div>
         
-        <div className="flex items-center gap-6 relative z-10 w-full text-left">
-          <div className="w-14 h-14 shrink-0 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-inner group-hover:scale-110 transition-transform">
-            <Activity className="text-green-400 group-hover:animate-pulse" size={28} />
+        <motion.button
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          onClick={onBodyMapOpen}
+          whileHover={{ scale: 1.05, y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex items-center gap-3 px-8 py-4 bg-black text-white rounded-3xl shadow-2xl border border-white/10 hover:border-primary/50 transition-all group min-w-[240px] justify-center"
+        >
+          <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-primary/20 transition-all">
+             <Activity size={20} className="text-secondary animate-pulse" />
           </div>
-          <div>
-            <h3 className="font-sora text-lg md:text-xl font-bold text-white mb-1 tracking-wide">
-              Diagnostic 3D Body Map
+          <div className="text-left">
+            <span className="block text-[10px] font-bold text-outline uppercase tracking-widest leading-none mb-1">Interactive Diagnostic</span>
+            <span className="block font-headline font-extrabold text-sm tracking-wide">3D Body Heat Map</span>
+          </div>
+        </motion.button>
+      </header>
+
+      {/* 0. Smart Watch Metrics (New) */}
+      <section>
+         <div className="flex items-center justify-between mb-6">
+            <h3 className="text-[11px] font-extrabold text-outline uppercase tracking-[0.3em] flex items-center gap-2">
+               <Zap size={14} className="text-secondary" />
+               Smart Watch Intelligence
             </h3>
-            <p className="text-sm font-dm-sans text-blue-100/90 hidden sm:block">
-              Click to view your interactive 3D health visualizations and diagnostic markers.
-            </p>
-            <p className="text-sm font-dm-sans text-blue-100/90 sm:hidden">
-              Click to view interactive 3D health mapping.
-            </p>
-          </div>
+            <div className="h-[1px] flex-1 mx-6 bg-surface-container" />
+            <span className="text-[10px] font-bold text-secondary">LIVE SYNC</span>
+         </div>
+         <WatchAnalyticsRow />
+      </section>
+      
+      {/* 1. Risk Score & AI Insights */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-4">
+          <RiskSpeedometer score={67} />
         </div>
-      </button>
-
-      {/* Top Banner */}
-      <SchemesBanner />
-
-      {/* Top Row: AI Summary + Risk Meter */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <HealthSummaryCard summary="Your vital signs are stable today. Fasting sugar is slightly elevated compared to last week. Remember to take Metformin post-dinner." />
-        </div>
-        <div className="lg:col-span-1 min-h-[220px]">
-          <RiskSpeedometer score={patient.riskScore} />
+        <div className="lg:col-span-8">
+          <AIClinicalInsights />
         </div>
       </div>
 
-      {/* System Indices */}
-      <div>
-        <BodySystemCards indices={patient.healthIndices} />
-      </div>
-
-      {/* Middle Row: Vitals + Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="min-h-[320px]">
-          <VitalsGraph />
+      {/* 2. Symptom Mapping & Health Index Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-5">
+          <SymptomMap />
         </div>
-        <div className="min-h-[320px]">
-          <ActivityGraph />
+        <div className="lg:col-span-7">
+          <SystemGrid />
         </div>
       </div>
 
-      {/* Bottom Row: Risk Trend */}
-      <div className="grid grid-cols-1 md:gap-6">
-        <div className="min-h-[300px] w-full">
+      {/* 3. Sleep & Recovery (New Analytics) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-7">
+          <SleepCycleChart />
+        </div>
+        <div className="lg:col-span-5 h-full">
+           <HealthSummaryCard />
+        </div>
+      </div>
+
+      {/* 4. Vitals & Forecast */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8">
+          <LiveVitalsChart />
+        </div>
+        <div className="lg:col-span-4">
           <RiskTrendChart />
         </div>
       </div>
+
+      <SchemesBanner />
     </motion.div>
   );
 }

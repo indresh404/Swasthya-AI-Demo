@@ -7,6 +7,7 @@ import DashboardMain from '@/components/dashboard/DashboardMain';
 import CheckinMain from '@/components/checkin/CheckinMain';
 import MedicineMain from '@/components/medicine/MedicineMain';
 import ProfileMain from '@/components/profile/ProfileMain';
+import AIChatBotSection from '@/components/checkin/AIChatBotSection';
 import { useSection } from '@/hooks/useSection';
 import dynamic from 'next/dynamic';
 
@@ -28,6 +29,7 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {activeSection === 'dashboard' && <DashboardMain key="dashboard" onBodyMapOpen={() => setBodyMapOpen(true)} />}
         {activeSection === 'checkin'   && <CheckinMain   key="checkin"   />}
+        {activeSection === 'aichat'    && <AIChatBotSection key="aichat" />}
         {activeSection === 'medicine'  && <MedicineMain  key="medicine"  />}
         {activeSection === 'profile'   && <ProfileMain   key="profile"   />}
       </AnimatePresence>

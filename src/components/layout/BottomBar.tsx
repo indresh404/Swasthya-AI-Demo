@@ -20,19 +20,20 @@ export default function BottomBar({ activeSection, setActiveSection }: BottomBar
 
   return (
     <nav className="md:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-40 px-4 w-[min(95vw,420px)] pb-safe outline-none">
-      <div className="bg-white/90 backdrop-blur-xl border border-blue-500/10 rounded-full h-[68px] flex items-center justify-between px-3 shadow-[0_8px_40px_rgba(37,99,235,0.18)]">
+      <div className="bg-surface-container-lowest/90 backdrop-blur-xl border border-surface-container rounded-full h-[68px] flex items-center justify-between px-3 shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
         {items.map((item) => {
-          const isActive = activeSection === item.id || (item.id === 'ai' && activeSection === 'checkin');
+          const isActive = activeSection === item.id || (item.id === 'ai' && activeSection === 'aichat');
           
           if (item.id === 'ai') {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveSection('checkin' as Section)}
+                onClick={() => setActiveSection('aichat' as Section)}
                 className="relative -top-7 group flex flex-col items-center"
               >
-                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-700 to-blue-500 flex items-center justify-center text-white shadow-[0_8px_32px_rgba(37,99,235,0.5)] border-[5px] border-white group-hover:scale-105 transition-transform">
-                  <Bot size={28} className={isActive ? 'animate-pulse' : ''} />
+                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center text-white shadow-[0_8px_32px_rgba(0,74,198,0.4)] border-[5px] border-surface-container-lowest group-hover:scale-105 transition-transform overflow-hidden relative">
+                   <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                   <Bot size={28} className="relative z-10" />
                 </div>
               </button>
             );
@@ -43,15 +44,17 @@ export default function BottomBar({ activeSection, setActiveSection }: BottomBar
               key={item.id}
               onClick={() => setActiveSection(item.id as Section)}
               className={`flex flex-col items-center justify-center w-14 h-full transition-all duration-300 ${
-                isActive ? 'text-blue-700 font-bold' : 'text-slate-400 hover:text-blue-500 font-medium'
+                isActive ? 'text-primary' : 'text-outline hover:text-primary'
               }`}
             >
               <item.icon 
-                size={isActive ? 22 : 20} 
-                className={`transition-all duration-300 ${isActive ? 'mb-1 drop-shadow-sm text-blue-600' : 'mb-0.5 opacity-80'}`} 
+                size={22} 
+                className={`transition-all duration-300 ${isActive ? 'mb-1 drop-shadow-sm' : 'mb-0.5 opacity-80'}`} 
                 strokeWidth={isActive ? 2.5 : 2}
               />
-              <span className={`text-[10px] transition-all duration-300`}>{item.label}</span>
+              <span className={`text-[10px] font-bold uppercase tracking-wider transition-all duration-300 ${isActive ? 'opacity-100' : 'opacity-60'}`}>
+                {item.label}
+              </span>
             </button>
           );
         })}

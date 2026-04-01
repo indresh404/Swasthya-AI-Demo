@@ -8,16 +8,18 @@ interface RiskSpeedometerProps {
 }
 
 export default function RiskSpeedometer({ score }: RiskSpeedometerProps) {
-  // Needle rotation: 0 score = -90deg, 100 score = 90deg (semicircle)
-  // Actually, let's map 0-100 to 0-180 degrees
-  const angle = (score / 100) * 180 - 90;
-
-  const getRiskColor = (s: number) => {
-    if (s < 40) return 'var(--risk-green)';
-    if (s < 70) return 'var(--risk-yellow)';
-    if (s < 85) return 'var(--risk-orange)';
-    return 'var(--risk-red)';
-  };
+  // SVG Path constants for a semi-circle
+  // Radius = 40, Center = (50, 50)
+  // M 10 50 A 40 40 0 0 1 90 50
+  
+  // Total length of the arc (C = 2 * pi * r)
+  // Half circumference = pi * 40 approx 125.66
+  const totalLength = 125.66;
+  
+  // Calculate offset based on score (0 to 100)
+  // 100 score = 0 offset (full stroke)
+  // 0 score = totalLength offset (no stroke)
+  const arcOffset = totalLength - (score / 100) * totalLength;
 
   const getRiskLabel = (s: number) => {
     if (s < 40) return 'Low Risk';
@@ -27,92 +29,69 @@ export default function RiskSpeedometer({ score }: RiskSpeedometerProps) {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-7 shadow-card border border-card-border flex flex-col items-center">
-      <h3 className="font-sora text-sm font-semibold text-text-secondary self-start mb-6">Health Risk Score</h3>
+    <section className="bg-surface-container-lowest rounded-3xl p-6 shadow-sm flex flex-col items-center border border-surface-container h-full">
+      <h2 className="w-full text-left font-headline font-bold text-on-surface-variant text-sm uppercase tracking-wider mb-2">
+        Aggregate Risk Score
+      </h2>
       
-      <div className="relative w-full max-w-[280px]">
-        <svg viewBox="0 0 280 180" className="w-full">
+      <div className="relative w-64 h-32 overflow-hidden mt-4">
+        {/* Semicircle SVG Gauge */}
+        <svg className="w-full h-full" viewBox="0 0 100 50">
           {/* Background Track */}
-          <path
-            d="M 40 150 A 100 100 0 0 1 240 150"
-            fill="none"
-            stroke="#e2e8f0"
-            strokeWidth="20"
-            strokeLinecap="round"
+          <path 
+            d="M 10 50 A 40 40 0 0 1 90 50" 
+            fill="none" 
+            stroke="var(--color-surface-container)" 
+            strokeLinecap="round" 
+            strokeWidth="8"
           />
           
-          {/* Segments */}
-          {/* Green: 0-40% */}
-          <path
-            d="M 40 150 A 100 100 0 0 1 101.8 71.4"
-            fill="none"
-            stroke="var(--risk-green)"
-            strokeWidth="20"
-            strokeDasharray="0"
-          />
-          {/* Yellow: 40-70% */}
-          <path
-            d="M 101.8 71.4 A 100 100 0 0 1 202.8 81.3"
-            fill="none"
-            stroke="var(--risk-yellow)"
-            strokeWidth="20"
-          />
-          {/* Orange: 70-85% */}
-          <path
-            d="M 202.8 81.3 A 100 100 0 0 1 234.6 114.1"
-            fill="none"
-            stroke="var(--risk-orange)"
-            strokeWidth="20"
-          />
-          {/* Red: 85-100% */}
-          <path
-            d="M 234.6 114.1 A 100 100 0 0 1 240 150"
-            fill="none"
-            stroke="var(--risk-red)"
-            strokeWidth="20"
-            strokeLinecap="round"
-          />
+          {/* Gradient definitions */}
+          <defs>
+            <linearGradient id="gauge-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="var(--color-primary-container)" />
+              <stop offset="100%" stopColor="var(--color-primary)" />
+            </linearGradient>
+          </defs>
 
-          {/* Needle */}
-          <motion.g
-            initial={{ rotate: -90 }}
-            animate={{ rotate: angle }}
-            transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-            style={{ originX: "140px", originY: "150px" }}
-          >
-            <line
-              x1="140" y1="150"
-              x2="140" y2="60"
-              stroke="var(--blue-900)"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-            <circle cx="140" cy="150" r="6" fill="var(--blue-900)" />
-          </motion.g>
+          {/* Animated Progress Path */}
+          <motion.path 
+            d="M 10 50 A 40 40 0 0 1 90 50" 
+            fill="none" 
+            stroke="url(#gauge-gradient)" 
+            strokeDasharray={totalLength}
+            initial={{ strokeDashoffset: totalLength }}
+            animate={{ strokeDashoffset: arcOffset }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+            strokeLinecap="round" 
+            strokeWidth="10"
+          />
         </svg>
 
-        {/* Center Label */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center">
-          <div className="font-mono text-4xl font-bold text-blue-900 leading-none">{score}</div>
-          <div className="font-sora text-xs font-semibold mt-1" style={{ color: getRiskColor(score) }}>
+        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center translate-y-1">
+          <motion.span 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.5 }}
+            className="font-mono text-5xl font-bold text-on-surface leading-none"
+          >
+            {score}
+          </motion.span>
+          <motion.span 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="font-label text-[10px] font-bold text-primary tracking-widest uppercase mt-2"
+          >
             {getRiskLabel(score)}
-          </div>
-        </div>
-
-        {/* Min/Max Labels */}
-        <div className="absolute bottom-0 left-6 text-[10px] text-text-muted font-medium uppercase tracking-wider">Low</div>
-        <div className="absolute bottom-0 right-6 text-[10px] text-text-muted font-medium uppercase tracking-wider">High</div>
-      </div>
-
-      <div className="w-full mt-6 flex items-center justify-between border-t border-card-border pt-4">
-        <div className="text-xs font-medium text-risk-orange flex items-center gap-1">
-          <span>↑ +4 pts</span>
-          <span className="text-text-muted font-normal">from last week</span>
-        </div>
-        <div className="px-2 py-1 bg-surface-2 rounded-full text-[10px] text-text-secondary font-medium">
-          Updated Today
+          </motion.span>
         </div>
       </div>
-    </div>
+
+      <div className="mt-4 flex items-center gap-2 bg-secondary-container/30 px-4 py-1.5 rounded-full border border-secondary-container/20 shadow-sm">
+        <span className="material-symbols-outlined text-secondary text-sm">trending_up</span>
+        <span className="text-[11px] font-bold text-on-secondary-container">+4 pts from last week</span>
+      </div>
+    </section>
   );
 }
