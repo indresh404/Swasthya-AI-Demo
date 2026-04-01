@@ -1,6 +1,6 @@
 export const patient = {
-  name: 'Arjun Mehta',
-  age: 34,
+  name: 'Indresh Suresh',
+  age: 19,
   gender: 'Male',
   city: 'Mumbai',
   phone: '+91 98765 43210',

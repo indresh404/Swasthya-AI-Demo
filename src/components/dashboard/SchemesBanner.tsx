@@ -12,7 +12,8 @@ export default function SchemesBanner() {
     <>
       <motion.div 
         whileHover={{ scale: 1.005 }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-secondary to-primary p-6 md:p-8 flex items-center justify-between shadow-xl ring-1 ring-white/20"
+        onClick={() => setIsPanelOpen(true)}
+        className="relative overflow-hidden rounded-3xl bg-secondary p-6 md:p-8 flex items-center justify-between shadow-xl ring-1 ring-white/20 cursor-pointer group"
       >
         <div className="flex items-center gap-6">
           <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner">

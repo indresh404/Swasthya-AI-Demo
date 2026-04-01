@@ -91,7 +91,7 @@ export default function AIChatBot() {
   };
 
   return (
-    <div className="bg-surface-container-lowest rounded-3xl shadow-lg border border-surface-container h-[600px] flex flex-col overflow-hidden relative">
+    <div className="bg-surface-container-lowest rounded-3xl shadow-lg border border-surface-container min-h-[80vh] flex flex-col overflow-hidden relative mb-8">
       {/* Header */}
       <header className="px-6 py-4 border-b border-surface-container flex items-center justify-between bg-surface-container-low/50 sticky top-0 z-10">
         <div className="flex items-center gap-3">

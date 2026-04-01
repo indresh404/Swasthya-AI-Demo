@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import HealthSummaryCard from './HealthSummaryCard';
 import RiskSpeedometer from './RiskSpeedometer';
 import AIClinicalInsights from './AIClinicalInsights';
-import { SymptomMap, SystemGrid } from './SystemGrid';
+import { SystemGrid } from './SystemGrid';
 import LiveVitalsChart from './LiveVitalsChart';
 import RiskTrendChart from './RiskTrendChart';
 import WatchAnalyticsRow from './WatchAnalyticsRow';
@@ -41,7 +41,7 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
             transition={{ delay: 0.1 }}
             className="font-headline font-extrabold text-3xl md:text-5xl text-on-surface tracking-tight"
           >
-            Stay fit, <span className="text-primary">{patient.name.split(' ')[0]}</span>
+            Welcome back, <span className="text-primary">{patient.name.split(' ')[0]}</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, x: -20 }}
@@ -49,29 +49,66 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
             transition={{ delay: 0.2 }}
             className="font-body font-medium text-on-surface-variant mt-2 max-w-xl"
           >
-            Your health intelligence is synced from your smart watch and latest clinical check-ins.
+            Your individualized health intelligence hub is ready.
           </motion.p>
         </div>
-        
-        <motion.button
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          onClick={onBodyMapOpen}
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex items-center gap-3 px-8 py-4 bg-black text-white rounded-3xl shadow-2xl border border-white/10 hover:border-primary/50 transition-all group min-w-[240px] justify-center"
-        >
-          <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-primary/20 transition-all">
-             <Activity size={20} className="text-secondary animate-pulse" />
-          </div>
-          <div className="text-left">
-            <span className="block text-[10px] font-bold text-outline uppercase tracking-widest leading-none mb-1">Interactive Diagnostic</span>
-            <span className="block font-headline font-extrabold text-sm tracking-wide">3D Body Heat Map</span>
-          </div>
-        </motion.button>
       </header>
 
-      {/* 0. Smart Watch Metrics (New) */}
+      {/* 1. RISK SCORE (FIRST) */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-12">
+          <RiskSpeedometer score={67} />
+        </div>
+      </section>
+
+      {/* 2. SCHEME OVERVIEW (BELOW RISK) */}
+      <section className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150 fill-mode-both">
+        <div className="flex items-center justify-between mb-4">
+           <h3 className="text-[10px] font-extrabold text-outline uppercase tracking-[0.3em]">Matched Health Schemes</h3>
+           <div className="h-[1px] flex-1 mx-6 bg-surface-container" />
+        </div>
+        <SchemesBanner />
+      </section>
+
+      {/* 3. 3D BODY MODEL BANNER (BELOW SCHEME) */}
+      <section className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300 fill-mode-both">
+        <motion.button
+          onClick={onBodyMapOpen}
+          whileHover={{ scale: 1.01, y: -2 }}
+          whileTap={{ scale: 0.99 }}
+          className="w-full flex items-center justify-between gap-10 px-10 py-10 bg-black text-white rounded-[2.5rem] shadow-2xl border border-white/10 group overflow-hidden relative"
+        >
+          {/* Abstract background pulse */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/30 transition-all duration-700" />
+          
+          <div className="flex items-center gap-8 relative z-10">
+            <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shadow-inner group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-500">
+              <Activity size={40} className="text-secondary animate-pulse" />
+            </div>
+            <div className="text-left">
+              <div className="flex items-center gap-2 mb-2">
+                 <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                 <span className="text-[11px] font-bold text-outline uppercase tracking-[0.3em]">Real-time Visualization Active</span>
+              </div>
+              <h3 className="font-headline font-extrabold text-3xl md:text-4xl tracking-tight leading-none mb-2">3D Diagnostic Body Map</h3>
+              <p className="text-white/60 font-medium max-w-md hidden md:block">Rotate and inspect your physiological hotspots identified by AI analysis.</p>
+            </div>
+          </div>
+          <div className="hidden md:flex flex-col items-end relative z-10">
+             <div className="text-[11px] font-extrabold text-outline uppercase tracking-widest mb-4">Click to Interact</div>
+             <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 group-hover:translate-x-2 transition-all">
+                <span className="text-xl">→</span>
+             </div>
+          </div>
+        </motion.button>
+      </section>
+
+      {/* 4. AI CLINICAL INSIGHTS */}
+      <section className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-450 fill-mode-both">
+        <AIClinicalInsights />
+      </section>
+
+      {/* 5. WATCH METRICS */}
       <section>
          <div className="flex items-center justify-between mb-6">
             <h3 className="text-[11px] font-extrabold text-outline uppercase tracking-[0.3em] flex items-center gap-2">
@@ -79,32 +116,16 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
                Smart Watch Intelligence
             </h3>
             <div className="h-[1px] flex-1 mx-6 bg-surface-container" />
-            <span className="text-[10px] font-bold text-secondary">LIVE SYNC</span>
          </div>
          <WatchAnalyticsRow />
       </section>
-      
-      {/* 1. Risk Score & AI Insights */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-4">
-          <RiskSpeedometer score={67} />
-        </div>
-        <div className="lg:col-span-8">
-          <AIClinicalInsights />
-        </div>
-      </div>
 
-      {/* 2. Symptom Mapping & Health Index Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-5">
-          <SymptomMap />
-        </div>
-        <div className="lg:col-span-7">
-          <SystemGrid />
-        </div>
-      </div>
+      {/* 6. HEALTH INDEX GRID */}
+      <section>
+        <SystemGrid />
+      </section>
 
-      {/* 3. Sleep & Recovery (New Analytics) */}
+      {/* 7. SLEEP & RECOVERY */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-7">
           <SleepCycleChart />
@@ -114,7 +135,7 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
         </div>
       </div>
 
-      {/* 4. Vitals & Forecast */}
+      {/* 8. VITALS & FORECAST */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8">
           <LiveVitalsChart />
@@ -123,8 +144,6 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
           <RiskTrendChart />
         </div>
       </div>
-
-      <SchemesBanner />
     </motion.div>
   );
 }
