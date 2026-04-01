@@ -110,7 +110,7 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
           <SleepCycleChart />
         </div>
         <div className="lg:col-span-5 h-full">
-           <HealthSummaryCard />
+           <HealthSummaryCard summary={patient.aiSummary} />
         </div>
       </div>
 
