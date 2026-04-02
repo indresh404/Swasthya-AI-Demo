@@ -30,11 +30,14 @@ export default function SchemesBanner() {
         </div>
         
         <button 
-          onClick={() => setIsPanelOpen(true)}
-          className="hidden md:flex items-center gap-2 px-6 py-3 bg-white text-primary font-headline font-bold text-xs rounded-2xl shadow-lg hover:bg-surface transition-all group active:scale-95"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsPanelOpen(true);
+          }}
+          className="flex items-center gap-2 px-5 py-2.5 bg-white text-primary font-headline font-bold text-xs rounded-2xl shadow-lg hover:bg-surface transition-all group active:scale-95 whitespace-nowrap"
         >
-          Check Eligibility
-          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          Click here to view
+          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
         </button>
       </motion.div>
 

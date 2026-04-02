@@ -94,10 +94,10 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
               <p className="text-white/60 font-medium max-w-md hidden md:block">Rotate and inspect your physiological hotspots identified by AI analysis.</p>
             </div>
           </div>
-          <div className="hidden md:flex flex-col items-end relative z-10">
-             <div className="text-[11px] font-extrabold text-outline uppercase tracking-widest mb-4">Click to Interact</div>
-             <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 group-hover:translate-x-2 transition-all">
-                <span className="text-xl">→</span>
+          <div className="flex flex-col items-center md:items-end relative z-10 shrink-0">
+             <div className="text-[10px] md:text-[11px] font-extrabold text-outline uppercase tracking-widest mb-3 whitespace-nowrap">Click here to view</div>
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20 group-hover:translate-x-2 transition-all">
+                <span className="text-lg md:text-xl">→</span>
              </div>
           </div>
         </motion.button>
