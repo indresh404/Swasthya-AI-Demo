@@ -1,10 +1,9 @@
-Swasthya Al - Family-Centric Preventive Healthcare Platform
+### Swasthya Al - Family-Centric Preventive Healthcare Platform
 
-[![Next.js Demo](https://img.shields.io/badge/Demo-Next js-blue.svg)](https://swasthya-ai-rouge.vercel.app/) [![Target Platform](https://img.shields.io/badge/Target -React_Native-61DAFB?logo=react)](https://reactnative
-
-.dev)
-
-[![AI Agents](https://img.shields.io/badge/AI-Agentic _Pipeline-8A2BE2)](#the-agentic-ai-pipeline)
+![Next.js Demo](https://img.shields.io/badge/Demo-Next_js-blue.svg)
+[![Target Platform](https://img.shields.io/badge/Target-React_Native-61DAFB?logo=react)](https://reactnative.dev)
+![AI Agents](https://img.shields.io/badge/AI-Agentic_Pipeline-8A2BE2)
+![n8n](https://img.shields.io/badge/Workflow-n8n-orange?logo=n8n&logoColor=white)
 
 > **One-Line Pitch:** A family-centric preventive health platform where an agentic Al pipeline learns your complete health story, maps your body's risk zones in real time, detects medicine conflicts, and connects patients to government healthcare schemes autonomously.
 
