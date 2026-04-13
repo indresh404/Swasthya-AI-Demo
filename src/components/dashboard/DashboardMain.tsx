@@ -1,9 +1,10 @@
 'use client'
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import HealthSummaryCard from './HealthSummaryCard';
-import RiskSpeedometer from './RiskSpeedometer';
+import SemiCircularRiskScore from './SemiCircularRiskScore';
+import QRScannerModal from './QRScannerModal';
 import AIClinicalInsights from './AIClinicalInsights';
 import { SystemGrid } from './SystemGrid';
 import LiveVitalsChart from './LiveVitalsChart';
@@ -12,13 +13,15 @@ import WatchAnalyticsRow from './WatchAnalyticsRow';
 import SleepCycleChart from './SleepCycleChart';
 import SchemesBanner from './SchemesBanner';
 import { patient } from '@/data/mockPatient';
-import { Activity, ShieldCheck, Zap } from 'lucide-react';
+import { Activity, ShieldCheck, Zap, QrCode } from 'lucide-react';
 
 interface DashboardMainProps {
   onBodyMapOpen: () => void;
 }
 
 export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
+  const [qrOpen, setQrOpen] = React.useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -52,12 +55,22 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
             Your individualized health intelligence hub is ready.
           </motion.p>
         </div>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setQrOpen(true)}
+          className="flex items-center gap-3 px-6 py-3 bg-primary text-white rounded-2xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all"
+        >
+           <QrCode size={18} />
+           <span className="text-xs font-black uppercase tracking-widest">Clinical Scan</span>
+        </motion.button>
       </header>
 
       {/* 1. RISK SCORE (FIRST) */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-12">
-          <RiskSpeedometer score={67} />
+          <SemiCircularRiskScore score={67} />
         </div>
       </section>
 
@@ -145,6 +158,12 @@ export default function DashboardMain({ onBodyMapOpen }: DashboardMainProps) {
           <RiskTrendChart />
         </div>
       </div>
+
+      <AnimatePresence>
+        {qrOpen && (
+          <QRScannerModal onClose={() => setQrOpen(false)} />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
