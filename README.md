@@ -1,7 +1,7 @@
 
 ---
 
-# 🧠 Swasthya AI — Preventive Healthcare Intelligence Platform
+# 🧠 Swasthya AI — Preventive Healthcare Intelligence Platform [DEMO-WEBAPP]
 
 ## 🚀 Overview
 
